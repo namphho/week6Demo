@@ -6,6 +6,7 @@ import retrofit2.http.Query
 
 /**
  * Created by nampham on 5/26/20.
+ * https://developers.themoviedb.org/3/movies/get-now-playing
  */
 interface MovieApi {
     @GET("movie/top_rated")
