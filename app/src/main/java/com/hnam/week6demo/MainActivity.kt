@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import androidx.core.content.FileProvider
 import androidx.core.content.FileProvider.getUriForFile
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_main.*
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         btnTakePhoto.setOnClickListener {
             startAdvancedCameraIntent()
+            //startBasicCameraIntent()
         }
         button2.setOnClickListener {
             getDataFromApi()
@@ -93,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 // Continue only if the File was successfully created
                 photoFile?.also {
-                    photoURI = getUriForFile(
+                    photoURI = FileProvider.getUriForFile(
                         this,
                         APP_FILE_PROVIDER,
                         it
@@ -106,7 +108,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getDataFromApi(){
-        MovieService.getInstance().getApi().getTopRateMovie().enqueue(object : Callback<VideoResponse> {
+        //MovieService.getInstance().getApi().getNowPlaying(API_KEY).
+        MovieService.getApi().getNowPlaying().enqueue(object : Callback<VideoResponse> {
             override fun onFailure(call: Call<VideoResponse>?, t: Throwable?) {
                 //todo something
             }
@@ -117,6 +120,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 response?.let {
                     val resp = it.body()
+                    Log.e(TAG, "data: ${resp.result.size}")
                 }
             }
 
